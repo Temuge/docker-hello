@@ -1,0 +1,12 @@
+sudo: required
+services: 
+  - docker
+
+
+before_install:
+  - docker build -t egumet/docker-hello -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true egumet/docker-hello npm run test -- --coverage
+
+language: generic 
