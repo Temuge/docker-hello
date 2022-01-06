@@ -2,11 +2,23 @@ sudo: required
 services: 
   - docker
 
-
 before_install:
   - docker build -t egumet/docker-hello -f Dockerfile.dev .
 
 script:
   - docker run -e CI=true egumet/docker-hello npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-hello"
+  env: "Dockerhello-env"
+  bucket_name: "elasticbeanstalk-us-east-2-597018734815"
+  bucket_path: "docker-hello"
+  on:
+    branch: master
+
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
 
 language: generic 
